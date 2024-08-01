@@ -1,0 +1,66 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.drawer {
+  font-size: 16px;
+  line-height: 18px;
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: var(--border-radius);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  color: var(--color-dark);
+  position: relative;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.drawerWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.drawerInner {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.drawerTitle {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 20px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #343a40;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #007bff;
+  }
+}

@@ -1,12 +1,8 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  css: {
-    modules: {
-      // Настройки CSS-модулей (по умолчанию включены)
-      localsConvention: 'camelCaseOnly',
-    },
-  },
+  base:'/Adept-test-task',
 });

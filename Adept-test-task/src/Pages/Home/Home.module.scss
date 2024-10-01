@@ -16,52 +16,72 @@
   color: #ffffff;
 }
 
-.headerCell {
-  padding: 10px;
-  text-align: left;
-  font-weight: bold;
-}
-
-.checkboxCell {
-  width: 40px;
-  text-align: center;
-}
-
-.selectAllCheckbox {
-  cursor: pointer;
-}
-
-.row {
-  border-bottom: 1px solid #dee2e6;
-
-  &.selected {
-    background-color: #e9ecef;
-  }
-}
-
+.headerCell,
 .cell {
   padding: 10px;
-
-  input {
-    border-radius: 5px;
-    border: 1px solid #007bff;
-    padding: 6px;
-  }
-  
-  input:focus {
-    outline: green;
-    border-color: green;
-  }
+  border: 1px solid #ddd;
+  text-align: center;
+  vertical-align: middle;
 }
 
-.rowCheckbox {
+/* Увеличиваем ширину колонки с задачами */
+.headerCell.tasksColumn,
+.cell.tasksColumn {
+  width: 60%;
+}
+
+.headerCell,
+.cell {
+  width: 20%;
+}
+
+.dateBox {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.overdue {
+  background-color: #ffcccc; // Красный для просроченных задач
+}
+
+.upcoming {
+  background-color: #ccffcc; // Зеленый для будущих задач
+}
+
+.gray {
+  background-color: #e0e0e0; // Серый для выполненных задач
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+.actionButton {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
   cursor: pointer;
-  width: 14px;
-  height: 14px;
-  accent-color: #007bff;
-  border-radius: 3px;
+  border-radius: 8px; /* Закругленные края для всех кнопок */
 }
 
+.completeButton {
+  background-color: #28a745;
+  color: white;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.actionButton:disabled {
+  background-color: gray;
+}
 .loader {
   border: 8px solid #f3f3f3;
   border-top: 8px solid #3498db;
@@ -86,90 +106,4 @@
   justify-content: center;
   align-items: center;
   height: 70vh;
-}
-
-.iconButton {
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  font-size: 0.9em;
-  margin: 0 0.5em;
-}
-
-.addButton {
-  display: inline-flex;
-  align-items: center;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 10px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  outline: none;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  @media (max-width: 800px) {
-    font-size: 10px;
-    padding: 4px 8px;
-  }
-
-  @media (max-width: 400px) {
-    font-size: 8px;
-    padding: 2px 6px;
-  }
-}
-
-.containerButton {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.editIcon {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .table {
-    font-size: 10px;
-  }
-
-  .headerCell, .cell {
-    padding: 6px;
-  }
-
-  .checkboxCell {
-    width: 30px;
-  }
-}
-
-@media (max-width: 480px) {
-  .table {
-    font-size: 8px;
-  }
-
-  .headerCell, .cell {
-    padding: 4px;
-  }
-
-  .checkboxCell {
-    width: 25px;
-  }
-
-  .addButton {
-    font-size: 8px;
-    padding: 2px 6px;
-  }
-
-  .iconButton {
-    font-size: 0.8em;
-  }
 }

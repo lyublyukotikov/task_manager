@@ -1,36 +1,36 @@
 @layer base {
   @font-face {
     font-display: swap;
-    font-family: "Extatica";
-    src: url("./fonts/Extatica-Regular.ttf") format("truetype");
+    font-family: 'Extatica';
+    src: url('./fonts/Extatica-Regular.ttf') format('truetype');
     font-style: normal;
     font-weight: 400;
   }
   @font-face {
     font-display: swap;
-    font-family: "Extatica";
-    src: url("./fonts/Extatica-Medium.ttf") format("truetype");
+    font-family: 'Extatica';
+    src: url('./fonts/Extatica-Medium.ttf') format('truetype');
     font-style: normal;
     font-weight: 500;
   }
   @font-face {
     font-display: swap;
-    font-family: "Extatica";
-    src: url("./fonts/Extatica-SemiBold.ttf") format("truetype");
+    font-family: 'Extatica';
+    src: url('./fonts/Extatica-SemiBold.ttf') format('truetype');
     font-style: normal;
     font-weight: 600;
   }
   @font-face {
     font-display: swap;
-    font-family: "Evolventa";
-    src: url("./fonts/Evolventa-Regular.ttf") format("truetype");
+    font-family: 'Evolventa';
+    src: url('./fonts/Evolventa-Regular.ttf') format('truetype');
     font-style: normal;
     font-weight: 400;
   }
   @font-face {
     font-display: swap;
-    font-family: "Evolventa";
-    src: url("./fonts/Evolventa-Bold.ttf") format("truetype");
+    font-family: 'Evolventa';
+    src: url('./fonts/Evolventa-Bold.ttf') format('truetype');
     font-style: normal;
     font-weight: 700;
   }
@@ -45,7 +45,7 @@
     color: var(--color-dark);
 
     height: 100vh;
-    background: #bebaba; 
+    background: #bebaba;
   }
 
   a {

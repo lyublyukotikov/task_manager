@@ -1,6 +1,5 @@
-import React, { ReactNode, RefObject } from "react";
-// @ts-ignore
-import styles from "./ModalTemplate.module.scss";
+import React, { ReactNode, RefObject } from 'react';
+import styles from './ModalTemplate.module.scss';
 
 interface ModalTemplateProps {
   drawerRef: RefObject<HTMLDivElement>;

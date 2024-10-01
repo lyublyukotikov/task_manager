@@ -9,19 +9,38 @@
   flex-direction: column;
 }
 
-.formLabel {
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #343a40;
+.label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
 }
 
-.formInput {
+.inputDate {
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #dee2e6;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #f8f9fa;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #007bff;
+  }
+}
+
+.textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  resize: none;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #007bff;
+  }
 }
 
 .formActions {
@@ -62,5 +81,6 @@
 
 .error {
   color: red;
-  margin-top: 10px;
+  font-size: 14px;
+  margin-top: -10px;
 }

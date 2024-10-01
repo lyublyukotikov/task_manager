@@ -1,143 +1,94 @@
-import React, { useState } from "react";
-import { FaEdit } from "react-icons/fa";
-import { Company } from "../../models/company";
-import { HomeProps } from "../../models/homeProps";
-import { useCompanies } from "../../hooks/useCompanies";
-import { useSelectedCompanies } from "../../hooks/useSelectedCompanies";
-// @ts-ignore
-import styles from "./Home.module.scss";
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite'; // MobX Hook для отслеживания изменений
+import { FaCheck, FaUndo, FaTrashAlt } from 'react-icons/fa'; // Добавляем иконку для "Отменить выполнение"
+import taskStore from '../../../store/TaskStore'; // Импортируем store
 
-const Home: React.FC<HomeProps> = ({
-  onSelectionChange,
-  selectAll,
-  onClickToDelete,
-}) => {
-  const { companies, status, updateCompany } = useCompanies();
-  const { selectedCompanies, handleCheckboxChange } = useSelectedCompanies(
-    companies,
-    selectAll,
-    onSelectionChange,
-    onClickToDelete
-  );
-  //храним в state
-  const [editId, setEditId] = useState<number | null>(null);
-  const [editName, setEditName] = useState<string>("");
-  const [editAddress, setEditAddress] = useState<string>("");
+// Импортируем хуки
+import { useFormattedDate } from '../../hooks/useFormattedDate';
+import { useTaskStyle } from '../../hooks/useTaskStyle';
 
-  //записываем id name address в state
-  const handleEditClick = (company: Company) => {
-    setEditId(company.id);
-    setEditName(company.name);
-    setEditAddress(company.address);
+import styles from './Home.module.scss';
+import { Task } from '../../../models/task';
+
+const Home = observer(() => {
+  // Получение задач при загрузке компонента
+  useEffect(() => {
+    taskStore.fetchTasks();
+  }, []);
+
+  // Используем хук для форматирования даты
+  const formatDate = useFormattedDate();
+
+  // Используем хук для определения стиля задачи
+  const getRowStyle = useTaskStyle();
+
+  // Обработчик удаления задачи
+  const handleDelete = (id: number) => {
+    taskStore.deleteTask(id);
   };
 
-  // передаем в store
-  const handleSaveClick = () => {
-    if (editId !== null) {
-      updateCompany(editId, { name: editName, address: editAddress });
-      setEditId(null);
-    }
+  // Обработчик для изменения статуса выполнения задачи
+  const handleToggleComplete = async (task: Task) => {
+    await taskStore.toggleCompleteTask(task.id, !task.completed);
   };
 
-  // отмена,отчищаем
-  const handleCancelClick = () => {
-    setEditId(null);
-  };
-
-  if (status === "loading") {
-    return (
-      <section className="section container">
+  // Рендер задач
+  return (
+    <section className="section container">
+      {taskStore.isLoading ? (
         <div className={styles.loaderContainer}>
           <div className={styles.loader}></div>
         </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="section container">
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th className={styles.checkboxCell}></th>
-              <th className={styles.headerCell}>Название компании</th>
-              <th className={styles.headerCell}>Адрес</th>
-              <th className={styles.headerCell}>Действия</th>
-            </tr>
-          </thead>
-          <tbody>
-            {companies.map((company: Company) => (
-              <tr
-                key={company.id}
-                className={`${styles.row} ${
-                  selectedCompanies.includes(company.id) ? styles.selected : ""
-                }`}
-              >
-                <td className={styles.checkboxCell}>
-                  <input
-                    type="checkbox"
-                    className={styles.rowCheckbox}
-                    checked={selectedCompanies.includes(company.id)}
-                    onChange={() => handleCheckboxChange(company.id)}
-                  />
-                </td>
-                <td className={styles.cell}>
-                  {editId === company.id ? (
-                    <input
-                      type="text"
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      autoFocus
-                    />
-                  ) : (
-                    company.name
-                  )}
-                </td>
-                <td className={styles.cell}>
-                  {editId === company.id ? (
-                    <input
-                      type="text"
-                      value={editAddress}
-                      onChange={(e) => setEditAddress(e.target.value)}
-                      autoFocus
-                    />
-                  ) : (
-                    company.address
-                  )}
-                </td>
-                <td className={styles.cell}>
-                  {editId === company.id ? (
-                    <div className={styles.containerButton}>
-                      <button
-                        className={styles.addButton}
-                        onClick={handleSaveClick}
-                      >
-                        Ок
-                      </button>
-                      <button
-                        className={styles.addButton}
-                        onClick={handleCancelClick}
-                      >
-                        Отмена
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => handleEditClick(company)}
-                      className={styles.editIcon}
-                    >
-                      <FaEdit />
-                    </button>
-                  )}
-                </td>
+      ) : (
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th className={styles.headerCell}>Время задачи</th>
+                <th className={`${styles.headerCell} ${styles.tasksColumn}`}>
+                  Задача
+                </th>
+                <th className={styles.headerCell}>Действия</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {taskStore.tasks.map((task) => (
+                <tr key={task.id} className={getRowStyle(task)}>
+                  <td className={styles.cell}>
+                    <div className={styles.dateBox}>
+                      {formatDate(task.dueDate)}
+                    </div>
+                  </td>
+                  <td className={`${styles.cell} ${styles.tasksColumn}`}>
+                    {task.name}
+                  </td>
+                  <td className={styles.cell}>
+                    <button
+                      onClick={() => handleToggleComplete(task)}
+                      className={`${styles.actionButton} ${
+                        task.completed
+                          ? styles.undoButton
+                          : styles.completeButton
+                      }`}
+                    >
+                      {task.completed ? <FaUndo /> : <FaCheck />}
+                      {task.completed ? 'Отменить выполнение' : 'Выполнить'}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(task.id)}
+                      className={`${styles.actionButton} ${styles.deleteButton}`}
+                    >
+                      <FaTrashAlt /> Удалить
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
-};
+});
 
 export default Home;

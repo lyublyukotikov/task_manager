@@ -1,42 +1,24 @@
-import React from "react";
-import styles from "./Header.module.scss";
-import { FaPlus } from "react-icons/fa";
+import React from 'react';
+import styles from '../Header/Header.module.scss';
+import { FaPlus } from 'react-icons/fa';
+import { HeaderProps } from '../../../../models/openadddrawer';
 
-function Header({
-  openAddDrawer,
-  openDeleteDrawer,
-  selectedCount,
-  toggleSelectAll,
-}) {
+const Header: React.FC<HeaderProps> = ({ openAddDrawer }) => {
   return (
     <header className={styles.header}>
       <div className={styles.headerInner}>
-        <h2 className={styles.headerTitle}>Список компаний</h2>
-        <div className={styles.actions}>
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              className={styles.checkbox}
-              onChange={toggleSelectAll}
-            />
-            Выделить всё
-          </label>
-        </div>
+        <h2 className={styles.headerTitle}>Планировщик заданий</h2>
+
+        {/* Кнопка для добавления компаний */}
         <button className={styles.addButton} onClick={openAddDrawer}>
           <span className={styles.addIcon}>
             <FaPlus />
           </span>
-          Добавить Компанию
+          Добавить Задачу
         </button>
-        {selectedCount > 0 ? (
-          <div className={styles.selectedCompanies} onClick={openDeleteDrawer}>
-            <span className={styles.selectedCount}>{selectedCount}</span>
-            <span className={styles.selectedText}>Выбранные компании</span>
-          </div>
-        ) : null}
       </div>
     </header>
   );
-}
+};
 
 export default Header;

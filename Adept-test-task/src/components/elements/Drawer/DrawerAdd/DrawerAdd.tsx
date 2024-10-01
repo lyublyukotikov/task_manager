@@ -1,85 +1,97 @@
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../store";
-import { addCompany } from "../../../../slices/companySlice";
-import useOutsideClick from "../../../../hooks/useOutsideClick";
-import ModalTemplate from "../ModalTemplate/ModalTemplate";
-// @ts-ignore
-import styles from "./DrawerAdd.module.scss";
+import React, { useRef, useState } from 'react';
+import useOutsideClick from '../../../../hooks/useOutsideClick';
+import ModalTemplate from '../ModalTemplate/ModalTemplate';
+import taskStore from '../../../../../store/TaskStore';
+import { CreateTaskDto } from '../../../../../models/createtask';
+import { observer } from 'mobx-react-lite';
+import { DrawerAddProps } from '../../../../../models/draweradd';
+import styles from './DrawerAdd.module.scss';
 
-const DrawerAdd = ({ closeAddModal }) => {
-  const dispatch: AppDispatch = useDispatch();
+// Оберните ваш компонент в observer
+const DrawerAdd: React.FC<DrawerAddProps> = observer(({ closeAddModal }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
-
-  const [companyName, setCompanyName] = useState("");
-  const [companyAddress, setCompanyAddress] = useState("");
-  const [errors, setErrors] = useState<{ name?: string; address?: string }>({});
+  const [eventDate, setEventDate] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useOutsideClick(drawerRef, closeAddModal);
 
-  const handleAddCompany = () => {
-    const newErrors: { name?: string; address?: string } = {};
-    if (!companyName.trim()) {
-      newErrors.name = "Название компании не может быть пустым";
-    }
-    if (!companyAddress.trim()) {
-      newErrors.address = "Адрес компании не может быть пустым";
-    }
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+  const handleAddTask = async () => {
+    if (!eventDate || !eventDescription) {
+      setError('Пожалуйста, заполните все поля.');
       return;
     }
 
-    dispatch(addCompany({ name: companyName, address: companyAddress }));
-    closeAddModal();
+    const selectedDate = new Date(eventDate).getTime();
+    const currentDate = new Date().getTime();
+
+    if (selectedDate < currentDate) {
+      setError('Некорректная дата. Дата задачи уже прошла.');
+      return;
+    }
+
+    const newTask: CreateTaskDto = {
+      name: eventDescription,
+      dueDate: new Date(eventDate).toISOString(),
+      completed: false,
+    };
+
+    try {
+      await taskStore.addTask(newTask);
+      setEventDate('');
+      setEventDescription('');
+      setError(null);
+      closeAddModal();
+    } catch {
+      setError('Ошибка при добавлении задачи.');
+    }
   };
 
   return (
     <ModalTemplate
       drawerRef={drawerRef}
       handleCloseModal={closeAddModal}
-      title="Добавление компании"
+      title="Добавление задач"
     >
       <form className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="companyName" className={styles.formLabel}>
-            Название компании:
+          <label htmlFor="eventDate" className={styles.label}>
+            Дата мероприятия
           </label>
           <input
-            id="companyName"
-            type="text"
-            className={styles.formInput}
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="Введите название компании"
+            type="date"
+            id="eventDate"
+            className={styles.inputDate}
+            value={eventDate}
+            onChange={(e) => setEventDate(e.target.value)}
             required
           />
-          {errors.name && <div className={styles.error}>{errors.name}</div>}
         </div>
+
         <div className={styles.formGroup}>
-          <label htmlFor="companyAddress" className={styles.formLabel}>
-            Адрес компании:
+          <label htmlFor="eventDescription" className={styles.label}>
+            Описание мероприятия
           </label>
-          <input
-            id="companyAddress"
-            type="text"
-            className={styles.formInput}
-            value={companyAddress}
-            onChange={(e) => setCompanyAddress(e.target.value)}
-            placeholder="Введите адрес компании"
+          <textarea
+            id="eventDescription"
+            className={styles.textarea}
+            rows={5}
+            value={eventDescription}
+            onChange={(e) => setEventDescription(e.target.value)}
+            placeholder="Введите описание задачи..."
             required
           />
-          {errors.address && (
-            <div className={styles.error}>{errors.address}</div>
-          )}
         </div>
+
+        {error && <p className={styles.error}>{error}</p>}
+
         <div className={styles.formActions}>
           <button
             type="button"
             className={styles.addButton}
-            onClick={handleAddCompany}
+            onClick={handleAddTask}
           >
-            Добавить
+            Добавить задачу
           </button>
           <button
             type="button"
@@ -92,6 +104,6 @@ const DrawerAdd = ({ closeAddModal }) => {
       </form>
     </ModalTemplate>
   );
-};
+});
 
 export default DrawerAdd;

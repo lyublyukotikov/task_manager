@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\THE_ADEPT_TASK\\TaskManagerAPI\\TaskManagerAPI.csproj": {}
+    "D:\\The_Adept_Task\\TaskManagerAPI\\TaskManagerAPI.csproj": {}
   },
   "projects": {
-    "D:\\THE_ADEPT_TASK\\TaskManagerAPI\\TaskManagerAPI.csproj": {
+    "D:\\The_Adept_Task\\TaskManagerAPI\\TaskManagerAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\THE_ADEPT_TASK\\TaskManagerAPI\\TaskManagerAPI.csproj",
+        "projectUniqueName": "D:\\The_Adept_Task\\TaskManagerAPI\\TaskManagerAPI.csproj",
         "projectName": "TaskManagerAPI",
-        "projectPath": "D:\\THE_ADEPT_TASK\\TaskManagerAPI\\TaskManagerAPI.csproj",
+        "projectPath": "D:\\The_Adept_Task\\TaskManagerAPI\\TaskManagerAPI.csproj",
         "packagesPath": "C:\\Users\\админ\\.nuget\\packages\\",
-        "outputPath": "D:\\THE_ADEPT_TASK\\TaskManagerAPI\\obj\\",
+        "outputPath": "D:\\The_Adept_Task\\TaskManagerAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\админ\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -46,6 +46,10 @@
           "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.8, )"
             },

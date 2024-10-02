@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using TaskApi.Data;  
+using TaskApi.Data;
+using TaskManagerAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllers();
 // Настройка подключения к базе данных через DataContext
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Регистрация сервиса ITasksService
+builder.Services.AddScoped<ITasksService, TasksService>();
 
 // Добавляем CORS политику, разрешающую запросы с клиента на порту 5173
 builder.Services.AddCors(options =>
@@ -21,6 +25,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Применение миграций при старте приложения
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+    db.Database.Migrate(); // Применяет все миграции
+}
 
 // Используем CORS политику в приложении
 app.UseCors("AllowLocalhost5173");

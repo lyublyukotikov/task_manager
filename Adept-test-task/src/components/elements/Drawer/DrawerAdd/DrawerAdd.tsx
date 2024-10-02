@@ -22,13 +22,7 @@ const DrawerAdd: React.FC<DrawerAddProps> = observer(({ closeAddModal }) => {
       return;
     }
 
-    const selectedDate = new Date(eventDate).getTime();
-    const currentDate = new Date().getTime();
-
-    if (selectedDate < currentDate) {
-      setError('Некорректная дата. Дата задачи уже прошла.');
-      return;
-    }
+    // Удалена проверка на просроченные задачи
 
     const newTask: CreateTaskDto = {
       name: eventDescription,

@@ -1,14 +1,13 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using TaskApi.Data;
 using TaskApi.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace TaskApi.Services
+namespace TaskManagerAPI.Services
 {
     public interface ITasksService
     {
         Task<IEnumerable<TodoTask>> GetAllTasksAsync();
-        Task<TodoTask> GetTaskByIdAsync(int id);
+        Task<TodoTask?> GetTaskByIdAsync(int id); 
         Task<TodoTask> CreateTaskAsync(TodoTask task);
         Task DeleteTaskAsync(int id);
         Task UpdateTaskCompletedStatusAsync(int id, bool completed);
@@ -28,9 +27,10 @@ namespace TaskApi.Services
             return await _context.Tasks.ToListAsync();
         }
 
-        public async Task<TodoTask> GetTaskByIdAsync(int id)
+        public async Task<TodoTask?> GetTaskByIdAsync(int id) 
         {
-            return await _context.Tasks.FindAsync(id);
+            var task = await _context.Tasks.FindAsync(id);
+            return task; 
         }
 
         public async Task<TodoTask> CreateTaskAsync(TodoTask task)

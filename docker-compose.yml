@@ -1,0 +1,36 @@
+
+
+services:
+  frontend:
+    build:
+      context: ./Adept-test-task
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173" 
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./TaskManagerAPI
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5000:8080"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=tasks_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345678
+    ports:
+      - "5432:5432" 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

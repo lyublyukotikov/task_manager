@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 using TaskApi.Data;
 using TaskApi.Models;
-using TaskApi.Services;
+using TaskManagerAPI.Services;
 
-namespace TaskApi.Controllers
+namespace TaskManagerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

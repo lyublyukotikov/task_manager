@@ -19,16 +19,13 @@ export default class TaskService {
   static async deleteTask(id: number): Promise<void> {
     await $api.delete(`/tasks/${id}`);
   }
-  // Обновление статуса выполнения задачи
-  static async toggleCompleteTask(
-    id: number,
-    completed: boolean
-  ): Promise<Task> {
-    const response = await $api.put<Task>(`/tasks/${id}/completed`, completed, {
+ // Обновление статуса выполнения задачи
+static async toggleCompleteTask(id: number, completed: boolean): Promise<Task> {
+  const response = await $api.put<Task>(`/tasks/${id}/completed?completed=${completed}`, null, {
       headers: {
-        "Content-Type": "application/json",
+          "Content-Type": "application/json",
       },
-    });
-    return response.data;
-  }
+  });
+  return response.data;
+}
 }
